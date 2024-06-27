@@ -1,3 +1,5 @@
+## Note that this is a fork to allow development of some bespoke PARADIM portal functionality. More broadly useful things will be rolled back to the public WholeTale fork of Girder.
+
 |logo| Girder |license-badge|
 =============================
 
