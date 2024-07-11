@@ -5,11 +5,14 @@ import 'girder/utilities/jquery/girderEnable';
 import 'girder/utilities/jquery/girderModal';
 
 import ThumbnailModel from '../models/ThumbnailModel';
+import ChameleonModel from '../models/ChameleonModel';
 
 import CreateThumbnailViewDialogTemplate from '../templates/createThumbnailViewDialog.pug';
 import CreateThumbnailViewTargetDescriptionTemplate from '../templates/createThumbnailViewTargetDescription.pug';
 
 import '../stylesheets/createThumbnailView.styl';
+
+import FileModel from 'girder/models/FileModel'
 
 /**
  * A dialog for creating thumbnails from a specific file.
@@ -33,12 +36,13 @@ var CreateThumbnailView = View.extend({
         },
 
         'submit #g-create-thumbnail-form': function (e) {
+            const view = this;
             e.preventDefault();
 
             this.$('.g-validation-failed-message').empty();
             this.$('.g-submit-create-chameleon').girderEnable(false);
 
-            new ThumbnailModel({
+            new ChameleonModel({
                 output_name: String(this.$('#g-output-name').val()) || '',                
                 target_endpoint: String(this.$('#g-endpoint-options').val()) || '',
                 output_type: String(this.$('#g-output-types').val()) || '',
@@ -46,17 +50,17 @@ var CreateThumbnailView = View.extend({
                 fileId: this.file.id,
                 attachToId: this.attachToId,
                 attachToType: this.attachToType
-            }).on('g:saved', function () {
-                this.$el.on('hidden.bs.modal', () => {
-                    this.trigger('g:created', {
-                        attachedToType: this.attachToType,
-                        attachedToId: this.attachToId
-                    });
-                }).modal('hide');
-            }, this).on('g:error', function (resp) {
-                this.$('.g-submit-create-chameleon').girderEnable(true);
-                this.$('.g-validation-failed-message').text(resp.responseJSON.message);
-            }, this).save();
+            })
+
+            $.ajax({
+                url: "https://data.paradim.org/api/v1/chameleon/rheedconverter",
+                method: "POST",
+                header: {"Content-Type": "application/json","access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"},
+                data: {"file_url":"http://localhost:8080/#item/6682ebf958acf55e85b4d718/download","output_file": "test","output_type":"File"}
+              }).done(function (resp) {
+                var file = new FileModel();
+                file.uploadToItem(view.item, resp, "filename", "mimeType");
+            })
         }
     },
 
@@ -78,10 +82,10 @@ var CreateThumbnailView = View.extend({
             file: this.file,
             item: this.item
         })).girderModal(this).on('shown.bs.modal', () => {
-            this.$('#g-thumbnail-width').focus();
+            this.$('#g-endpoint-options').focus();
         });
 
-        this.$('#g-thumbnail-width').focus();
+        this.$('#g-endpoint-options').focus();
 
         this.searchWidget.setElement(this.$('.g-search-field-container')).render();
 

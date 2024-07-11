@@ -29,7 +29,7 @@ from girder.utility.model_importer import ModelImporter
 from . import rest, utils
 
 def load(info):
-    info['apiRoot'].thumbnail = rest.Thumbnail()
+    info['apiRoot'].chameleon = rest.Chameleon()
 
     for model in (Item(), Collection(), Folder(), User()):
-        model.exposeFields(level=AccessType.READ, fields='_thumbnail')
+        model.exposeFields(level=AccessType.READ, fields='_chameleon')

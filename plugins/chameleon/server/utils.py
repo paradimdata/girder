@@ -1,7 +1,7 @@
 from girder.plugins.jobs.models.job import Job
 
 
-def scheduleChameleonlJob(file, user, output_name, output_type, input_extension, target_endpoint):
+def scheduleChameleonJob(file, user, output_name, output_type, input_extension, target_endpoint):
     """
     Schedule a local chameleon creation job and return it.
     """

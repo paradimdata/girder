@@ -27,11 +27,11 @@ from girder.plugins.jobs.models.job import Job
 from . import utils
 
 
-class Thumbnail(Resource):
+class Chameleon(Resource):
     def __init__(self):
-        super(Thumbnail, self).__init__()
-        self.resourceName = 'thumbnail'
-        self.route('POST', (), self.createThumbnail)
+        super(Chameleon, self).__init__()
+        self.resourceName = 'Chameleon'
+        self.route('POST', (), self.createChameleon)
 
     @access.user
     @filtermodel(model=Job)
@@ -52,7 +52,7 @@ class Thumbnail(Resource):
         .errorResponse(('Write access was denied on the attach destination.',
                         'Read access was denied on the file.'), 403)
     )
-    def createThumbnail(self, file, output_name, output_type, input_extension, target_endpoint, attachToId, attachToType):
+    def createChameleon(self, file, output_name, output_type, input_extension, target_endpoint, attachToId, attachToType):
         user = self.getCurrentUser()
 
         self.model(attachToType).load(attachToId, user=user, level=AccessType.WRITE, exc=True)

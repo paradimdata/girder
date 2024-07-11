@@ -1,6 +1,6 @@
 import Model from 'girder/models/Model';
 
-var ThumbnailModel = Model.extend({
+var ChameleonModel = Model.extend({
     resourceName: 'chameleon'
 });
 
