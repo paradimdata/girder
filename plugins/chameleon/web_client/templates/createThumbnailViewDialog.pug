@@ -1,0 +1,53 @@
+.modal-dialog
+  .modal-content
+    form#g-create-thumbnail-form.modal-form(role="form")
+      .modal-header
+        button.close(data-dismiss="modal", aria-hidden="true", type="button") &times;
+        h4.modal-title Converted with Chameleon
+        .g-dialog-subtitle
+          i.icon-doc-inv
+          |  #{file.get('name')}
+      .modal-body
+        label Select an endpoint
+        select#g-endpoint-options.form-control(name="dropdown-options")
+          option(value="option1") RHEED
+          option(value="option2") PPMS/MPMS
+          option(value="option3") Bruker Raw
+          option(value="option4") Bruker Raw Background
+          option(value="option5") Non-4D STEM
+          option(value="option6") 4D STEM
+          option(value="option7") MBE
+        label Output Name
+        input#g-output-name.form-control(type="text", placeholder="Enter output name here", name="text-input")
+        .g-validation-failed-message
+        label Select an output type
+        select#g-output-types.form-control(name="dropdown-options")
+          option(value="option1") None
+          option(value="option2") Bytes
+          option(value="option3") JSON
+          option(value="option4") File 
+        label Select an input file extension
+        select#g-input-extension-options.form-control(name="dropdown-options")
+          option(value="option1") None
+          option(value="option2") .raw
+          option(value="option3") .txt
+          option(value="option4") .uxd 
+        label Attach to
+          .g-thumbnail-attach-container
+            label.radio-inline
+              input.g-thumbnail-attach-this-item(type="radio", name="g-thumbnail-attach-to", checked="on")
+              | This item
+            label.radio-inline
+              input.g-thumbnail-attach-something-else(type="radio", name="g-thumbnail-attach-to")
+              | Something else...
+        .g-thumbnail-custom-target-container.hide
+          .g-target-result-container
+          .g-search-field-container
+          label Enter a file
+          input#g-file-input(type="file", name="file-input")
+        .g-validation-failed-message
+      .modal-footer
+        a.btn.btn-small.btn-default(data-dismiss="modal") Close
+        button.g-submit-create-chameleon.btn.btn-small.btn-primary(type="submit")
+          i.icon-picture
+          |  Create
