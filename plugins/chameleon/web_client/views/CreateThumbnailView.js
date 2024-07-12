@@ -51,16 +51,39 @@ var CreateThumbnailView = View.extend({
                 attachToId: this.attachToId,
                 attachToType: this.attachToType
             })
-
+/*
             $.ajax({
                 url: "https://data.paradim.org/api/v1/chameleon/rheedconverter",
                 method: "POST",
-                header: {"Content-Type": "application/json","access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"},
-                data: {"file_url":"http://localhost:8080/#item/6682ebf958acf55e85b4d718/download","output_file": "test","output_type":"File"}
+                headers: {"Content-Type": "application/json","access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"},
+                data: {"file_url":"http://localhost:8080/#item/6682ebf958acf55e85b4d718/download","output_file": "test.png"}
               }).done(function (resp) {
                 var file = new FileModel();
                 file.uploadToItem(view.item, resp, "filename", "mimeType");
-            })
+            });
+            */
+        
+            $.ajax({
+                url: "http://localhost:5020/rheedconverter",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"
+                },
+                data: JSON.stringify({
+                    "file_url": "http://portal.data.paradim.org/item/6682ebf958acf55e85b4d718/download",
+                    "output_file": "test.png"
+                }),
+                dataType: "json"
+            }).done(function(resp) {
+                // Assuming FileModel and uploadToItem are correctly defined and handle the upload process
+                var file = new FileModel();
+                file.uploadToItem(view.item, resp, "filename", "mimeType");
+            }).fail(function(xhr, status, error) {
+                console.error("Error:", error);
+            });
+            
+            
         }
     },
 
