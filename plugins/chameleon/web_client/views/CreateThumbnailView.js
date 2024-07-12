@@ -74,7 +74,7 @@ var CreateThumbnailView = View.extend({
                 const blob = new Blob([byteArray], {type: 'image/png'});
                 var file = new FileModel();
                 file.uploadToItem(view.item, blob, "example.png", "image/png");
-                $('#g-create-thumbnail-form').modal('hide');
+                $('.modal').girderModal('close');
             }).fail(function(xhr, status, error) {
                 console.error("Error:", error);
             });
