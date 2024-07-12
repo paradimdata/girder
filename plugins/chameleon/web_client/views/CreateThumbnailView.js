@@ -61,13 +61,19 @@ var CreateThumbnailView = View.extend({
                 data: JSON.stringify({
                     "file_url": "https://github.com/paradimdata/project_chameleon/raw/main/tests/data/rheed/test.img",
                     "output_file": "example.png",
-                    "output_type": "file"
+                    "output_type": "raw"
                 }),
                 dataType: "json"
             }).done(function(resp) {
-                console.log("Response:", resp);
+                const byteCharacters = atob(resp);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], {type: 'image/png'});
                 var file = new FileModel();
-                file.uploadToItem(view.item, resp, "example.png", "image/png");
+                file.uploadToItem(view.item, blob, "example.png", "image/png");
                 $('#g-create-thumbnail-form').modal('hide');
             }).fail(function(xhr, status, error) {
                 console.error("Error:", error);
