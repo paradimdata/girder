@@ -50,19 +50,7 @@ var CreateThumbnailView = View.extend({
                 fileId: this.file.id,
                 attachToId: this.attachToId,
                 attachToType: this.attachToType
-            })
-/*
-            $.ajax({
-                url: "https://data.paradim.org/api/v1/chameleon/rheedconverter",
-                method: "POST",
-                headers: {"Content-Type": "application/json","access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"},
-                data: {"file_url":"http://localhost:8080/#item/6682ebf958acf55e85b4d718/download","output_file": "test.png"}
-              }).done(function (resp) {
-                var file = new FileModel();
-                file.uploadToItem(view.item, resp, "filename", "mimeType");
             });
-            */
-        
             $.ajax({
                 url: "http://localhost:5020/rheedconverter",
                 method: "POST",
@@ -71,14 +59,16 @@ var CreateThumbnailView = View.extend({
                     "access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"
                 },
                 data: JSON.stringify({
-                    "file_url": "http://portal.data.paradim.org/item/6682ebf958acf55e85b4d718/download",
-                    "output_file": "test.png"
+                    "file_url": "https://github.com/paradimdata/project_chameleon/raw/main/tests/data/rheed/test.img",
+                    "output_file": "example.png",
+                    "output_type": "file"
                 }),
                 dataType: "json"
             }).done(function(resp) {
-                // Assuming FileModel and uploadToItem are correctly defined and handle the upload process
+                console.log("Response:", resp);
                 var file = new FileModel();
-                file.uploadToItem(view.item, resp, "filename", "mimeType");
+                file.uploadToItem(view.item, resp, "example.png", "image/png");
+                $('#g-create-thumbnail-form').modal('hide');
             }).fail(function(xhr, status, error) {
                 console.error("Error:", error);
             });
