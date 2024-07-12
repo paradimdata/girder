@@ -1,5 +1,5 @@
-name: Thumbnails
-description: Generate thumbnails from files.
+name: Chameleon
+description: Generate chameleon conversions from files.
 version: 0.1.0
 dependencies:
   - jobs
