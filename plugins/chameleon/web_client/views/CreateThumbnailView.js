@@ -101,8 +101,13 @@ var CreateThumbnailView = View.extend({
                 var file = new FileModel();
                 file.uploadToItem(view.item, blob, outputFileName, "image/png");
                 $('.modal').girderModal('close');
+
+                location.reload();
             }).fail(function(xhr, status, error) {
                 console.error("Error:", error);
+                // Display error message in the dialog box
+                view.$('.g-validation-failed-message').html(`<div class="alert alert-danger">Error: ${error}</div>`);
+                view.$('.g-submit-create-chameleon').girderEnable(true); // Re-enable the submit button
             });
             
             
