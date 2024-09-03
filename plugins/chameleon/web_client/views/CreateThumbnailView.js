@@ -42,7 +42,7 @@ var CreateThumbnailView = View.extend({
             this.$('.g-validation-failed-message').empty();
             this.$('.g-submit-create-chameleon').girderEnable(false);
 
-            new ChameleonModel({
+            const chameleonModel = new ChameleonModel({
                 output_name: String(this.$('#g-output-name').val()) || '',                
                 target_endpoint: String(this.$('#g-endpoint-options').val()) || '',
                 output_type: String(this.$('#g-output-types').val()) || '',
@@ -51,16 +51,42 @@ var CreateThumbnailView = View.extend({
                 attachToId: this.attachToId,
                 attachToType: this.attachToType
             });
+
+            const outputFileName = chameleonModel.get('output_name') || 'file.png';
+            const endpoint = chameleonModel.get('target_endpoint') || "option1";
+            const fileId = chameleonModel.get('fileId')  // Assuming fileId is available as this.file.id
+            const attachToId = chameleonModel.get('attachToId')
+            const downloadUrl = `http://localhost:8080/api/v1/item/${attachToId}/download`;
+            let finalEndpoint;
+
+            if (endpoint === 'option1'){
+                finalEndpoint = "http://localhost:5020/rheedconverter";
+            }else if (endpoint === 'option2'){
+                finalEndpoint = "http://localhost:5020/ppmsmpms";
+            }else if (endpoint === 'option3'){
+                finalEndpoint = "http://localhost:5020/brukerrawconverter";
+            }else if (endpoint === 'option4'){
+                finalEndpoint = "http://localhost:5020/brukerrawbackground";
+            }else if (endpoint === 'option5'){
+                finalEndpoint = "http://localhost:5020/non4dstem";
+            }else if (endpoint === 'option6'){
+                finalEndpoint = "http://localhost:5020/stemarray4d";
+            }else if (endpoint === 'option7'){
+                finalEndpoint = "http://localhost:5020/mbeparser";
+            }
+
             $.ajax({
-                url: "http://localhost:5020/rheedconverter",
+                url: finalEndpoint,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"
                 },
                 data: JSON.stringify({
-                    "file_url": "https://github.com/paradimdata/project_chameleon/raw/main/tests/data/rheed/test.img",
-                    "output_file": "example.png",
+                    //https://github.com/paradimdata/project_chameleon/raw/main/tests/data/rheed/test.img
+                    //http://localhost:8080/api/v1/item/66bb7b88e4164b5ac7b68ace/download
+                    "file_url": downloadUrl,
+                    "output_file": outputFileName,
                     "output_type": "raw"
                 }),
                 dataType: "json"
@@ -73,7 +99,7 @@ var CreateThumbnailView = View.extend({
                 const byteArray = new Uint8Array(byteNumbers);
                 const blob = new Blob([byteArray], {type: 'image/png'});
                 var file = new FileModel();
-                file.uploadToItem(view.item, blob, "example.png", "image/png");
+                file.uploadToItem(view.item, blob, outputFileName, "image/png");
                 $('.modal').girderModal('close');
             }).fail(function(xhr, status, error) {
                 console.error("Error:", error);
