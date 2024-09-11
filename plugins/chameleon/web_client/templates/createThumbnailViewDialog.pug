@@ -26,6 +26,12 @@
           option(value="option2") .raw
           option(value="option3") .txt
           option(value="option4") .uxd 
+        label Select a file type (PPMS/MPMS ONLY)
+        select#g-input-extension-options.form-control(name="dropdown-options")
+          option(value="option1") Heat Capacity
+          option(value="option2") AC Magnetic Susceptibility
+          option(value="option3") 4 Probe Resistivity
+          option(value="option4") Thermal Transport 
         label Attach to
           .g-thumbnail-attach-container
             label.radio-inline
