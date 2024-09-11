@@ -83,26 +83,31 @@ var CreateThumbnailView = View.extend({
                     "access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"
                 },
                 data: JSON.stringify({
-                    //https://github.com/paradimdata/project_chameleon/raw/main/tests/data/rheed/test.img
-                    //http://localhost:8080/api/v1/item/66bb7b88e4164b5ac7b68ace/download
                     "file_url": downloadUrl,
                     "output_file": outputFileName,
                     "output_type": "raw"
                 }),
                 dataType: "json"
             }).done(function(resp) {
+                console.log("Server Response:", resp); 
                 const byteCharacters = atob(resp);
                 const byteNumbers = new Array(byteCharacters.length);
                 for (let i = 0; i < byteCharacters.length; i++) {
                     byteNumbers[i] = byteCharacters.charCodeAt(i);
                 }
                 const byteArray = new Uint8Array(byteNumbers);
-                const blob = new Blob([byteArray], {type: 'image/png'});
-                var file = new FileModel();
-                file.uploadToItem(view.item, blob, outputFileName, "image/png");
-                $('.modal').girderModal('close');
-
-                location.reload();
+                if (endpoint === 'option1'){
+                    const blob = new Blob([byteArray], {type: 'image/png'});
+                    var file = new FileModel();
+                    file.uploadToItem(view.item, blob, outputFileName, "image/png");
+                    $('.modal').girderModal('close');
+                }else if (endpoint === 'option2'){
+                    const blob = new Blob([byteArray], {type: 'text/plain'});
+                    var file = new FileModel();
+                    file.uploadToItem(view.item, blob, outputFileName, "text/plain");
+                    $('.modal').girderModal('close');
+                }
+                //location.reload();
             }).fail(function(xhr, status, error) {
                 console.error("Error:", error);
                 // Display error message in the dialog box
