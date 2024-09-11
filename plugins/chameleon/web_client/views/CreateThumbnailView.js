@@ -47,6 +47,7 @@ var CreateThumbnailView = View.extend({
                 target_endpoint: String(this.$('#g-endpoint-options').val()) || '',
                 output_type: String(this.$('#g-output-types').val()) || '',
                 output_type: String(this.$('#g-input-extension-options').val()) || '',
+                ppms_file_type: String(this.$('#g-ppms-file-options').val()) || '',
                 fileId: this.file.id,
                 attachToId: this.attachToId,
                 attachToType: this.attachToType
