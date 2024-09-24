@@ -55,6 +55,7 @@ var CreateThumbnailView = View.extend({
 
             const outputFileName = chameleonModel.get('output_name') || 'file.png';
             const endpoint = chameleonModel.get('target_endpoint') || "option1";
+            const ppms_file_type = chameleonModel.get('ppms_file_type') || "option1";
             const fileId = chameleonModel.get('fileId')  // Assuming fileId is available as this.file.id
             const attachToId = chameleonModel.get('attachToId')
             const downloadUrl = `http://localhost:8080/api/v1/item/${attachToId}/download`;
@@ -86,7 +87,7 @@ var CreateThumbnailView = View.extend({
                 data: JSON.stringify({
                     "file_url": downloadUrl,
                     "output_file": outputFileName,
-                    "output_type": "raw"
+                    "output_type": "raw",
                 }),
                 dataType: "json"
             }).done(function(resp) {
