@@ -60,23 +60,46 @@ var CreateThumbnailView = View.extend({
             const attachToId = chameleonModel.get('attachToId')
             const downloadUrl = `http://localhost:8080/api/v1/item/${attachToId}/download`;
             let finalEndpoint;
-
-            if (endpoint === 'option1'){
-                finalEndpoint = "http://localhost:5020/rheedconverter";
-            }else if (endpoint === 'option2'){
-                finalEndpoint = "http://localhost:5020/ppmsmpms";
-            }else if (endpoint === 'option3'){
-                finalEndpoint = "http://localhost:5020/brukerrawconverter";
-            }else if (endpoint === 'option4'){
-                finalEndpoint = "http://localhost:5020/brukerrawbackground";
-            }else if (endpoint === 'option5'){
-                finalEndpoint = "http://localhost:5020/non4dstem";
-            }else if (endpoint === 'option6'){
-                finalEndpoint = "http://localhost:5020/stemarray4d";
-            }else if (endpoint === 'option7'){
-                finalEndpoint = "http://localhost:5020/mbeparser";
+            
+            switch (endpoint) {
+                case 'option1': 
+                    finalEndpoint = "http://localhost:5020/rheedconverter";
+                    break; 
+                case 'option2': 
+                    finalEndpoint = "http://localhost:5020/ppmsmpms";
+                    break; 
+                case 'option3': 
+                    finalEndpoint = "http://localhost:5020/brukerrawconverter";
+                    break;
+                case 'option4': 
+                    finalEndpoint = "http://localhost:5020/brukerrawbackground";
+                    break;
+                case 'option5': 
+                    finalEndpoint = "http://localhost:5020/non4dstem";
+                    break;
+                case 'option6': 
+                    finalEndpoint = "http://localhost:5020/stemarray4d";
+                    break;
+                case 'option7': 
+                    finalEndpoint = "http://localhost:5020/mbeparser";
+                    break;
+                default:
+                    finalEndpoint = "http://localhost:5020/default"; // Fallback in case none match
             }
-
+            console.log('finalEndpoint:', finalEndpoint);
+            let extraData = {};
+            if (endpoint === 'option2'){
+                if (ppms_file_type === 'option1') {
+                    extraData = { "value_name": "1" };   
+                } else if (ppms_file_type === 'option2') {
+                    extraData = { "value_name": "2" }; 
+                }else if (ppms_file_type === 'option3') {
+                    extraData = { "value_name": "3" }; 
+                }else if (ppms_file_type === 'option4') {
+                    extraData = { "value_name": "4" }; 
+                }
+            }
+            console.log('extraData:', extraData);
             $.ajax({
                 url: finalEndpoint,
                 method: "POST",
@@ -84,11 +107,11 @@ var CreateThumbnailView = View.extend({
                     "Content-Type": "application/json",
                     "access-token": "nschakJJdEsIQUfADFerH6aGjyz706f114C3c8leXhM"
                 },
-                data: JSON.stringify({
+                data: JSON.stringify(Object.assign({
                     "file_url": downloadUrl,
                     "output_file": outputFileName,
-                    "output_type": "raw",
-                }),
+                    "output_type": "raw"
+                }, extraData)),
                 dataType: "json"
             }).done(function(resp) {
                 console.log("Server Response:", resp); 
@@ -98,17 +121,24 @@ var CreateThumbnailView = View.extend({
                     byteNumbers[i] = byteCharacters.charCodeAt(i);
                 }
                 const byteArray = new Uint8Array(byteNumbers);
-                if (endpoint === 'option1'){
-                    const blob = new Blob([byteArray], {type: 'image/png'});
-                    var file = new FileModel();
-                    file.uploadToItem(view.item, blob, outputFileName, "image/png");
-                    $('.modal').girderModal('close');
-                }else if (endpoint === 'option2'){
-                    const blob = new Blob([byteArray], {type: 'text/plain'});
-                    var file = new FileModel();
-                    file.uploadToItem(view.item, blob, outputFileName, "text/plain");
-                    $('.modal').girderModal('close');
-                }
+                const blob = new Blob([byteArray], {type: 'image/png'});
+                let mimeType;
+                switch (endpoint) {
+                    case 'option1': 
+                        mimeType = 'image/png';
+                        break; 
+                    case 'option2': 
+                        mimeType = 'text/plain';
+                        break;
+                    case 'option3': 
+                        mimeType = 'text/plain';
+                        break;
+                    default: 
+                        mimeType = 'application/octet-stream';  
+}
+                var file = new FileModel();
+                file.uploadToItem(view.item, blob, outputFileName, mimeType);
+                $('.modal').girderModal('close');
                 //location.reload();
             }).fail(function(xhr, status, error) {
                 console.error("Error:", error);
