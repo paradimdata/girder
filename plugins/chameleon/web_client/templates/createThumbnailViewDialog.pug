@@ -14,9 +14,10 @@
           option(value="option2") PPMS/MPMS
           option(value="option3") Bruker Raw
           option(value="option4") Bruker Raw Background
-          option(value="option5") Non-4D STEM
+          option(value="option5") MBE
           option(value="option6") 4D STEM
-          option(value="option7") MBE
+          option(value="option7") Non-4D STEM(Folder)
+          option(value="option8") Non-4D STEM(File)
         label Output Name
         input#g-output-name.form-control(type="text", placeholder="Enter output name here", name="text-input")
         .g-validation-failed-message
@@ -26,25 +27,19 @@
           option(value="option2") .raw
           option(value="option3") .txt
           option(value="option4") .uxd 
+          option(value="option5") .dm4 
+          option(value="option6") .ser 
+          option(value="option7") .emd
         label Select a file type (PPMS/MPMS ONLY)
         select#g-ppms-file-options.form-control(name="dropdown-options")
           option(value="option1") Heat Capacity
           option(value="option2") AC Magnetic Susceptibility
           option(value="option3") 4 Probe Resistivity
-          option(value="option4") Thermal Transport 
-        label Attach to
-          .g-thumbnail-attach-container
-            label.radio-inline
-              input.g-thumbnail-attach-this-item(type="radio", name="g-thumbnail-attach-to", checked="on")
-              | This item
-            label.radio-inline
-              input.g-thumbnail-attach-something-else(type="radio", name="g-thumbnail-attach-to")
-              | Something else...
-        .g-thumbnail-custom-target-container.hide
-          .g-target-result-container
+          option(value="option4") Thermal Transport
+        label Add file (Bruker Background Only)
+        .g-target-result-container
           .g-search-field-container
-          label Enter a file
-          input#g-file-input(type="file", name="file-input")
+            input#g-second-file-search.form-control(type="search", placeholder="Search or enter file path", name="secondFile")
         .g-validation-failed-message
       .modal-footer
         a.btn.btn-small.btn-default(data-dismiss="modal") Close
