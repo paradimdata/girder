@@ -143,9 +143,8 @@ var CreateThumbnailView = View.extend({
                 data: JSON.stringify(Object.assign({
                     "input_url": downloadUrl,
                     "output": outputFileName,
-                    "output_type": "raw"
+                    /*"output_type": "JSON"*/
                 }, extraData)),
-                dataType: "json"
             }).done(function(resp) {
                 switch (endpoint) {
                     case 'option1': 
@@ -169,14 +168,7 @@ var CreateThumbnailView = View.extend({
                         mimeType = 'application/octet-stream';  
                 }
                 console.log("Server Response:", resp); 
-                const byteCharacters = atob(resp);
-                const byteNumbers = new Array(byteCharacters.length);
-                for (let i = 0; i < byteCharacters.length; i++) {
-                    byteNumbers[i] = byteCharacters.charCodeAt(i);
-                }
-                const byteArray = new Uint8Array(byteNumbers);
-                const blob = new Blob([byteArray], {type: mimeType});
-                let mimeType;
+                const blob = new Blob([resp], { type: mimeType });
 
                 var file = new FileModel();
                 file.uploadToItem(view.item, blob, outputFileName, mimeType);
