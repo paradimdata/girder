@@ -18,6 +18,10 @@
           option(value="option6") 4D STEM
           option(value="option7") Non-4D STEM(Folder)
           option(value="option8") Non-4D STEM(File)
+          option(value="option9") HS2
+          option(value="option10") JEOL SEM
+          option(value="option11") Bruker BRML
+          option(value="option12") RHEED Video
         label Output Name
         input#g-output-name.form-control(type="text", placeholder="Enter output name here", name="text-input")
         .g-validation-failed-message
@@ -30,12 +34,6 @@
           option(value="option5") .dm4 
           option(value="option6") .ser 
           option(value="option7") .emd
-        label Select a file type (PPMS/MPMS ONLY)
-        select#g-ppms-file-options.form-control(name="dropdown-options")
-          option(value="option1") Heat Capacity
-          option(value="option2") AC Magnetic Susceptibility
-          option(value="option3") 4 Probe Resistivity
-          option(value="option4") Thermal Transport
         label Add file (Bruker Background Only)
         .g-target-result-container
           .g-search-field-container
